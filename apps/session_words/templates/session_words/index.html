@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Session Words</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="static/session_words/styles.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		{% if messages %}
+        <div class="messages">
+        	{% for message in messages %}
+        	<p class="{{ message.tags }}">{{ message }}</p>
+        	{% endfor %}
+        </div>
+        {% endif %}
+	    <div class="row">
+			<form class="col-sm-5" action="/addsesh" method="POST">
+				<div class='form-group'>
+					{% csrf_token %}
+					<h1><label for="addword">Add a new word</label></h1>
+					<input type="text" class="form-control" name="word">
+				</div>
+				<div class='form-group'>
+					<h3>Choose color</h3>
+						<div class="radio">
+							<label><input type="radio" name="color" value="red">Red</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="color" value="green">Green</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="color" value="blue">Blue</label>
+						</div>
+				</div>
+				<div class='form-group'>
+					<div class="checkbox-bg">
+						<label><input class="bigger" type="checkbox" name="bigger" value="bigger">show in BIG fonts!</label>
+					</div>
+				</div>
+				<div class='form-group'>
+					<button class="btn" type="submit" value="Add to Session">Add to Session</button>
+				</div>	
+			</form>
+			<form class="col-sm-7" action="/clearsesh" method="POST">
+				{% csrf_token %}
+				<div class='form-group'>
+				<button class="btn" type="submit" value="Clear Session">Clear Session</button>
+				</div>
+				<div class='form-group'>
+					<h3>Successful Sessions: </h3>
+					{{request.session.tries}}
+					<p class="{{request.session.color}}" id="{{request.session.bigger}}">{{request.session.word}} {{request.session.msg}} {{request.session.time}}</p>
+				</div>	
+			</form>
+		</div>
+	</div>
+</body>
+</html>
