@@ -4,24 +4,28 @@ from datetime import datetime
 from json import dumps
 from time import gmtime, strftime
 
+
+
 def index(request):
 	return render(request, 'session_words/index.html')
 
 def addsesh(request):
 	form_info = []
-	count=0
 	try:
-		request.session['tries']=0
-
+	
 		if request.method == 'POST':
 			request.session['word'] = request.POST['word']
 			request.session['tries']+=1
+
 			if 'color' in request.POST:
 				request.session['color'] = request.POST['color']
-			elif 'bigger' in request.POST:
+			if 'bigger' in request.POST:
 				request.session['bigger'] = request.POST['bigger']
 			request.session['msg'] = '- added on'
 			request.session['time'] = strftime(" %c ", gmtime())
+			
+		else:
+			request.session['tries'] = 0
 		
 		
 	except KeyError:
